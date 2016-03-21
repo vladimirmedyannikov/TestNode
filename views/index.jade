@@ -1,0 +1,9 @@
+html
+  head
+    title=title
+    link(rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+  body
+    h1 Подсчет слов на странице
+    form(method='post', action='/search')
+      textarea(name='urls')
+      input(name='submit', type='submit', value = 'Save')

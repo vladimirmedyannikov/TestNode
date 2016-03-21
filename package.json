@@ -1,0 +1,39 @@
+{
+  "name": "lesson7",
+  "version": "0.0.0",
+  "description": "Lesson 7",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^1.5.2",
+    "bcrypt": "^0.8.5",
+    "bcrypt-nodejs": "0.0.3",
+    "bookshelf": "^0.9.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.1",
+    "crypto": "0.0.3",
+    "express": "~4.13.4",
+    "express-session": "^1.13.0",
+    "faker": "^3.0.1",
+    "jade": "^1.11.0",
+    "lodash": "^4.6.1",
+    "moment": "^2.11.2",
+    "mongodb": "^2.1.7",
+    "mongoose": "^4.4.6",
+    "mongoskin": "^2.0.3",
+    "mysql": "^2.10.2",
+    "oauth2orize": "^1.2.2",
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-local": "^1.0.0",
+    "passport-oauth2-client-password": "^0.1.2",
+    "request": "^2.69.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause"
+}

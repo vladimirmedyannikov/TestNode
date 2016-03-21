@@ -1,0 +1,14 @@
+html
+  head
+    title= title
+    link(rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+  body
+    h1= message
+    table.table.table-bordered.table-striped
+      tr
+        th Слово
+        th Количество
+      for word in words
+        tr
+          th=word.word
+          td=word.count
