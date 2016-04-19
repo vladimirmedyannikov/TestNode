@@ -80,6 +80,43 @@ module.exports = function(route, passport){
         })
     });
 
+    route.post('/mysql/bills', function(req, res){
+        console.log("lol");
+        connectionPool.getConnection(function(err, connection){
+            if (err){
+                console.log(err);
+                return res.send("Error database:");
+            }
+            var account = req.body.account;
+
+            console.log(account);
+            connection.query("SELECT * FROM Users WHERE email = ? ",[account.email], function(err, rows){
+                if (err) { console.log(err); }
+                var user = rows[0];
+                console.log(user);
+
+                var insertId = 0;
+                connection.query("Insert into Bills (about, name, summvalue, idUser) values (?, ?, ?, ?)",[req.about, req.name, req.summvalue, user.idUser], function(err, result){
+                    if(err) {
+                        console.log(err);
+                    }
+                    insertId = result.insertId;
+                });
+
+                connection.query("SELECT * FROM Bills WHERE idBill = ? ",[insertId], function(err, rows){
+                    if (err){ console.log(err);}
+                    var bill = rows[0];
+                    console.log(rows[0]);
+                });
+
+            });
+
+
+
+
+        })
+    });
+
     route.get('/mysql/users/list', function(req, res){
         connectionPool.getConnection(function(err, connection){
             if (err){
