@@ -54,9 +54,6 @@ var testFile = fs.readFileSync("text.txt");
 var answer = frequency.getCount(testFile.toString());
 console.log(JSON.stringify(answer));
 
-
-
-
 var html = fs.readFileSync("./index.html");
 
 app.get('/user', function(req, res) {
