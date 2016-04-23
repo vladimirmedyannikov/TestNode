@@ -17,6 +17,8 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+
+
 require('./config/passport')(passport);
 
 app.use(cookieParser());

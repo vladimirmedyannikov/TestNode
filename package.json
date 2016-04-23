@@ -21,6 +21,7 @@
     "mongoose": "^4.4.6",
     "mongoskin": "^2.0.3",
     "mysql": "^2.10.2",
+    "node-gcm": "^0.14.0",
     "oauth2orize": "^1.2.2",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
