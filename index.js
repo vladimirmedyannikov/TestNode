@@ -23,9 +23,7 @@ require('./config/passport')(passport);
 
 app.use(cookieParser());
 app.use(session({
-    secret: 'myLittleSecretKey',
-    resave : true,
-    saveUnitialized:true
+    secret: 'myLittleSecretKey'
 }));
 app.use(passport.initialize());
 app.use(passport.session());

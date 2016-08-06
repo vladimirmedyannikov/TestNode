@@ -24,19 +24,36 @@ module.exports = function(passport) {
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
         console.log("serialize");
-        done(null, user.id);
+        done(null, user);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         console.log("deserialize");
         connectionPool.getConnection(function(err, connection){
+            var response = id;
             if (err){
                 console.log(err);
-                return res.send("Error database :");
+                response.code = 500;
+                response.code = "Error database;"
+                return res.send(response);
             }
-            connection.query("SELECT * FROM Users WHERE idUser = ? ",[id], function(err, rows){
-                done(err, rows[0]);
+            connection.query("SELECT * FROM Users WHERE idUser = ? ",[id.user.idUser], function(err, rows){
+                if (err){
+
+                };
+                if (rows.length){
+                    response.code = 200,
+                    response.message = "User signUp!";
+                    response.user = {email:rows[0].email, idUser:rows[0].idUser};
+                    done(err, response);
+                }
+                else {
+                    response.code = 400;
+                    response.message = "Register is not avaliable";
+                    done(err, response);
+                }
+
             });
         });
 
@@ -57,8 +74,8 @@ module.exports = function(passport) {
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, email, password, done) {
-            // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
+            // find a user whose email is the same as the forms email
             console.log("req", req);
             connectionPool.getConnection(function(err, connection){
                 if (err){
@@ -90,6 +107,67 @@ module.exports = function(passport) {
             });
         })
     );
+
+//// signup service
+///-----------------
+passport.use(
+    'local-signup-service',
+    new LocalStrategy({
+        // by default, local strategy uses username and password, we will override with email
+        usernameField : 'email',
+        passwordField : 'password',
+        passReqToCallback : true // allows us to pass back the entire request to the callback
+    },
+    function(req, email, password, done) {
+        // find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to login already exists
+        console.log(done);
+        var response = {
+            code : 0,
+            message:"Unknown",
+            user:{email:null,idUser:0}
+        };
+        console.log("req", req.body);
+        connectionPool.getConnection(function(err, connection){
+            if (err){
+                console.log(err);
+                //return res.send("Error database :(");
+            }
+            connection.query("SELECT * FROM Users WHERE email = ?",[email], function(err, rows) {
+                if (err)
+                    return done(err);
+                if (rows.length) {
+                    response.code = 403;
+                    response.message = "User is register";
+                    response.user = {email:rows[0].email, idUser:rows[0].idUser};
+                    req.body.user = response;
+                    console.log("response", response);
+                    return done(null, response);
+                } else {
+                    // if there is no user with that username
+                    // create the user
+                    var newUserMysql = {
+                        email: email,
+                        //password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
+                        password : password
+                    };
+                    response.code = 200;
+                    response.message = "User signup!!!";
+                    response.user = newUserMysql;
+
+                    var insertQuery = "INSERT INTO Users ( email, password ) values (?,?)";
+
+                    connection.query(insertQuery,[newUserMysql.email, newUserMysql.password],function(err, rows) {
+                        newUserMysql.idUser = rows.insertId;
+                        if(err) console.log("Insert user",err);
+                        return done(null, response);
+                    });
+                }
+            });
+        });
+    })
+);
+
 
     // =========================================================================
     // LOCAL LOGIN =============================================================
